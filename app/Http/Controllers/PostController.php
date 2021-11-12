@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Post;
 use App\Models\Tag;
 use Illuminate\Http\Request;
@@ -12,24 +13,22 @@ class PostController extends Controller
     {
         $posts = Post::all();
 
-//        return view('post.index', compact('posts'));
-//        $post = Post::find(4);
-        $tag = Tag::find(1);
-        dd($tag->posts);
-//        $posts = Post::where('category_id', 2)->get();
-//        dd($posts);
+        return view('post.index', compact('posts'));
     }
 
     public function create()
     {
-        return view('post.create');
+        $categories = Category::all();
+
+        return view('post.create', compact('categories'));
     }
 
     public function store()
     {
         $data = request()->validate([
             'title' => 'string',
-            'text' => 'string'
+            'text' => 'string',
+            'category_id' => ''
         ]);
 
         $post = Post::create($data);
@@ -44,14 +43,17 @@ class PostController extends Controller
 
     public function edit(Post $post)
     {
-        return view('post.edit', compact('post'));
+        $categories = Category::all();
+
+        return view('post.edit', compact('post', 'categories'));
     }
 
     public function update(Post $post)
     {
         $data = request()->validate([
             'title' => 'string',
-            'text' => 'string'
+            'text' => 'string',
+            'category_id' => ''
         ]);
 
         $post->update($data);
