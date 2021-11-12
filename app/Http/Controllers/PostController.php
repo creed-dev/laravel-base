@@ -11,49 +11,53 @@ class PostController extends Controller
     {
         $posts = Post::all();
 
-        return view('posts', compact('posts'));
+        return view('post.index', compact('posts'));
     }
 
     public function create()
     {
-        $posts = [
-            [
-                'title' => 'Created#1 title',
-                'text' => 'Created#1 text',
-                'likes' => 1000,
-                'is_published' => 1,
-            ],
-            [
-                'title' => 'Created#2 title',
-                'text' => 'Created#2 text',
-                'likes' => 2000,
-                'is_published' => 1,
-            ],
-            [
-                'title' => 'Created#3 title',
-                'text' => 'Created#3 text',
-                'likes' => 3000,
-                'is_published' => 1,
-            ],
-            [
-                'title' => 'Created#4 title',
-                'text' => 'Created#4 text',
-                'likes' => 4000,
-                'is_published' => 1,
-            ],
-            [
-                'title' => 'Created#5 title',
-                'text' => 'Created#5 text',
-                'likes' => 5000,
-                'is_published' => 1,
-            ]
-        ];
+        return view('post.create');
+    }
 
-        foreach ($posts as $post) {
-            Post::create($post);
-        }
+    public function store()
+    {
+        $data = request()->validate([
+            'title' => 'string',
+            'text' => 'string'
+        ]);
 
-        dump('created');
+        $post = Post::create($data);
+
+        return redirect()->route('posts.show', $post);
+    }
+
+    public function show(Post $post)
+    {
+        return view('post.show', compact('post'));
+    }
+
+    public function edit(Post $post)
+    {
+        return view('post.edit', compact('post'));
+    }
+
+    public function update(Post $post)
+    {
+        $data = request()->validate([
+            'title' => 'string',
+            'text' => 'string'
+        ]);
+
+        $post->update($data);
+
+        return redirect()->route('posts.show', $post);
+    }
+
+    public function destroy(Post $post)
+    {
+        $post->delete();
+
+        return redirect()->route('posts.index');
     }
 
     public function deleteAll()
