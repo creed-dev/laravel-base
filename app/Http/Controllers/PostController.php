@@ -12,6 +12,9 @@ class PostController extends Controller
         $posts = Post::all();
 
         return view('post.index', compact('posts'));
+
+//        $posts = Post::where('category_id', 2)->get();
+//        dd($posts);
     }
 
     public function create()
@@ -58,16 +61,6 @@ class PostController extends Controller
         $post->delete();
 
         return redirect()->route('posts.index');
-    }
-
-    public function deleteAll()
-    {
-        $posts = Post::all();
-        foreach ($posts as $post) {
-            $post->delete();
-        }
-
-        dd('Posts is deleted');
     }
 
 }
