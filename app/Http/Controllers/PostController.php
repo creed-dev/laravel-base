@@ -57,8 +57,8 @@ class PostController extends Controller
     public function update(Post $post)
     {
         $data = request()->validate([
-            'title' => 'string',
-            'text' => 'string',
+            'title' => 'required | string',
+            'text' => 'required | string',
             'category_id' => '',
             'tags' => ''
         ]);
